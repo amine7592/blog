@@ -16,5 +16,24 @@ $(document).ready(function () {
 
     });
 
+    
+
+    $("#savePostBtn").click(addPost);
+
+
 });
+
+
+
+function addPost(){
+
+    //creare un item HTML e aggiungerlo nel DOM.
+    var title = $("#postTitle").val();
+    var body = $("#postBody").val();
+
+    var post = new Post(title,body,true);
+
+
+
+}
 
