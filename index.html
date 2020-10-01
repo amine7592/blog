@@ -50,30 +50,29 @@
 
     <section class="container">
 
-        <div class="row">
-            <div class="col-md-4 col-sm-6 px-2 my-1">
+        <div class="row" id="postsRow">
+            <div class="col-md-4 col-sm-6 px-2 my-1" id="postContainer" style="display: none;">
 
                 <div class="card" id="first-article">
 
-                    <header class="card-header">Titolo 1</header>
+                    <header class="card-header"></header>
 
                     <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
 
                     <article class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
+                        <h5 class="card-title"></h5>
                         <p class="card-text">
-                            saddasdsasadsdasdasdadsa
                         </p>
 
                     </article>
                     <footer class="px-2">
-                        <div class="input-group mb-3">
+                        <!-- <div class="input-group mb-3">
                             <input type="text" class="form-control comment-text" placeholder="Commenta"
                                 aria-label="Commenta" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary send-comment" type="button">invia</button>
                             </div>
-                        </div>
+                        </div> -->
 
                         <ul class="list-group list-group-flush comments-container">
                             <!-- add dinamically 
@@ -88,73 +87,6 @@
 
             </div>
 
-
-            <div class="col-md-4 col-sm-6 px-2 my-1">
-
-                <div class="card">
-
-                    <header class="card-header">Titolo 1</header>
-
-                    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-
-                    <article class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">
-                            saddasdsasadsdasdasdadsa
-                        </p>
-
-                    </article>
-                    <footer></footer>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-4 col-sm-6 px-2 my-1">
-
-                <div class="card">
-
-                    <header class="card-header">Titolo 1</header>
-
-                    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-
-                    <article class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">
-                            saddasdsasadsdasdasdadsa
-                        </p>
-
-                    </article>
-                    <footer></footer>
-
-                </div>
-
-
-
-            </div>
-
-            <div class="col-md-4 col-sm-6 px-2">
-
-                <div class="card">
-
-                    <header class="card-header">Titolo 1</header>
-
-                    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-
-                    <article class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">
-                            saddasdsasadsdasdasdadsa
-                        </p>
-
-                    </article>
-                    <footer></footer>
-
-                </div>
-
-
-
-            </div>
 
 
 
@@ -191,10 +123,30 @@
                             <div class="col-sm-12">
                               <input type="text" class="form-control" id="postTitle" placeholder="inserisci il titolo">
                               <textarea class="form-control" placeholder="inserisci il testo" id="postBody" rows="4"></textarea>
+                            
+                              
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="publicCheck">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        public 
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="featuredCheck">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        featured 
+                                    </label>
+                                </div>
+
+
                             </div>
+
                                 
                               
                         </div>
+
+                        
 
 
                     </form>
@@ -220,7 +172,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="js/Post.js"></script>
+    <script src="app/models/Post.js"></script>
+    <script src="app/controllers/index.js"></script>
     <script src="js/_main.js"></script>
 
 
