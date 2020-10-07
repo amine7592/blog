@@ -7,7 +7,7 @@ posts.push(new Post("titolo 5","dasads sdads aasd",true,true))
 posts.push(new Post("Titolone","dasa dssd adsaasd  dsadsasddassadasd dasjkasd",true,false))
 
 
-new postController().init();
+new PostController().init();
 
 
 

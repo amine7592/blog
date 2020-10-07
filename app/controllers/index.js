@@ -1,78 +1,118 @@
-var postController = function () {
+class PostController{
 
-    this. posts = [];
 
-    this.postsContainer;
-    this.postContainer;
-    this.modal;
-    this.openModalBtn;
-    this.modalTitle;
-    this.modalDescription;
-    this.modalPublicCheck;
-    this.addPostBtn;
+    constructor(){
+        this.posts = [];
+        this.restController = new RestController();
+        //UI
+        this.postsContainer;
+        this.postContainer;
+        this.modal;
+        this.openModalBtn;
+        this.modalTitle;
+        this.modalDescription;
+        this.modalPublicCheck;
+        this.addPostBtn;
 
-    function init() {
-
-        
-
+    }
+    
+    init() {
         $(document).ready(function () {
-            postsRow = $("#postsRow");
-            postContainer = $("#postContainer");
-            modal = $("#newPostModal");
-            modalTitle = $("#postTitle");
-            modalBody = $("#postDescription");
-            modalCheck = $("#publicCheck");
-            addPostBtn = $("#savePostBtn");
-            var posts;
-
-            $.get({
-                url: "https://api.npoint.io/24620ef625c768a4f3c4",
-                dataType: "text",
-                success: function(data,textStatus,jqXHR){
-                        console.log("data",JSON.parse(data));
-                        posts = JSON.parse(data);
-
-                        console.log(JSON.stringify(posts));
-
-
-                        for(var i = 0; i< posts.length; i++){
-                            var post = posts[i];
-                            if(post.public === true){
-                                createUIPost(post);
-                            }
-                        }
+            console.log(this);
+            this.postsRow = $("#postsRow");
+            this.postContainer = $("#postContainer");
+            this.modal = $("#newPostModal");
+            this.modalTitle = $("#postTitle");
+            this.modalBody = $("#postBody");
+            this.modalCheck = $("#publicCheck");
+            this.addPostBtn = $("#savePostBtn");
+            this.addPostBtn = $("#savePostBtn");
+            
+            this.addPostBtn.click(function(){
+                var post = new Post(
+                    this.modalTitle.val(),
+                    this.modalBody.val(),
+                    this.modalCheck.is(":checked"),
+                    false
+                );
+                this.newPost(post);
+                this.closeModal();
+                this.resetModal();
+            }.bind(this));
 
 
-
-                }
-              });
-
-
-            addPostBtn.click(function(){
-                var post = new Post("adsdsa","asddasdas",true,false);
-                addPost(post);
-            });
+            this.getPosts();
 
            
 
 
-        });
+        }.bind(this));
 
     }
 
 
-    function getPosts() {
-        let posts = []
-        posts.push(new Post("Titolo 2", "dasadssd addsadsda adsdsa dsa saasd", true, false))
-        posts.push(new Post("titolo 3", "ldasda dasodsaodsa adsodoasdsa", false, true))
-        posts.push(new Post("Titolo 4", "dsadasd dsaasdasdas", true, false))
-        posts.push(new Post("titolo 5", "dasads sdads aasd", true, true))
-        posts.push(new Post("Titolone", "dasa dssd adsaasd  dsadsasddassadasd dasjkasd", true, false))
-        return posts;
+
+    getPosts() {
+
+        this.restController.get("https://texty-89895.firebaseio.com/posts.json",function(data,status,xhr){
+                for(var id in data){
+                    var post = data[id];
+                    if(post.public === true){
+                        this.createUIPost(post);
+                    }
+                }
+
+
+
+        }.bind(this));
+        // $.get({
+        //     url: "https://texty-89895.firebaseio.com/posts.json",
+        //     success: function(data,textStatus,jqXHR){
+
+        //            for(var id in data){
+        //                 var post = data[id];
+        //                 if(post.public === true){
+        //                     this.createUIPost(post);
+        //                 }
+        //            }
+
+        //     }.bind(this)
+        //   });
+
+        
+    }
+
+    newPost(post){
+        //api call
+        console.log()
+        var data = {
+            "title":post.title,
+            "body": post.body,
+            "featured": post.featured,
+            "public": post.public,
+            "tag": [
+                "notizie",
+                "covid"
+            ]
+
+        }
+
+        $.post({
+            url:"https://texty-89895.firebaseio.com/posts.json",
+            data : JSON.stringify(data),
+            success:function(data,status,xhr){
+                this.createUIPost(post);
+
+            }.bind(this)
+
+
+        })
+
+
     }
 
 
-    function addPost(post) {
+    addPost(post) {
 
         console.log("post",post);
         var postContainer = $("#postContainer").clone();
@@ -92,7 +132,7 @@ var postController = function () {
 
     }
 
-    function createUIPost(post){
+    createUIPost(post){
         var postContainer = $("#postContainer").clone();
         postContainer.css("display","block");
         postContainer.attr("id","");
@@ -108,24 +148,22 @@ var postController = function () {
     
     }
 
-    function closeModal() {
+    closeModal() {
+        this.modal.modal('hide');
+    }
+
+
+    openModal() {
+
 
     }
 
 
-    function openModal() {
-
-
-    }
-
-
-    function resetModal() {
+    resetModal() {
+        this.modalTitle.val("");
+        this.modalBody.val("");
 
     }
 
-    return {
-        init : init,
-        addPost:addPost,
-    };
-
+    
 }
