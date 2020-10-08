@@ -14,11 +14,15 @@ class PostController{
         this.modalPublicCheck;
         this.addPostBtn;
 
+        this.editMode = false;
+        this.editedPostId = null;
+        this.editedPost = null;
+
+
     }
     
     init() {
-        $(document).ready(function () {
-            console.log(this);
+        $(document).ready(function (){
             this.postsRow = $("#postsRow");
             this.postContainer = $("#postContainer");
             this.modal = $("#newPostModal");
@@ -29,15 +33,28 @@ class PostController{
             this.addPostBtn = $("#savePostBtn");
             
             this.addPostBtn.click(function(){
-                var post = new Post(
-                    this.modalTitle.val(),
-                    this.modalBody.val(),
-                    this.modalCheck.is(":checked"),
-                    false
-                );
-                this.newPost(post);
+
+                if(editMode){
+                    //
+                    this.updatePost(editedPost);
+
+
+                }else{
+
+                    var post = new Post(
+                        this.modalTitle.val(),
+                        this.modalBody.val(),
+                        this.modalCheck.is(":checked"),
+                        false
+                    );
+                    this.newPost(post);
+
+
+                }
+              
                 this.closeModal();
                 this.resetModal();
+
             }.bind(this));
 
 
@@ -51,40 +68,42 @@ class PostController{
     }
 
 
+    updatePost(post){
+        //call the rest controller
+
+        this.restController.updatePost("https://texty-89895.firebaseio.com/posts/" +post.id  + ".json",
+            function(){
+                this.closeModal();
+                this.resetModal();
+                //update UI 
+                editMode = false;
+                editedPost = null;
+
+            }.bind(this)
+        )
+
+
+    }
+
+
 
     getPosts() {
 
         this.restController.get("https://texty-89895.firebaseio.com/posts.json",function(data,status,xhr){
                 for(var id in data){
                     var post = data[id];
+                    post.id = id;
                     if(post.public === true){
                         this.createUIPost(post);
                     }
                 }
-
-
-
         }.bind(this));
-        // $.get({
-        //     url: "https://texty-89895.firebaseio.com/posts.json",
-        //     success: function(data,textStatus,jqXHR){
-
-        //            for(var id in data){
-        //                 var post = data[id];
-        //                 if(post.public === true){
-        //                     this.createUIPost(post);
-        //                 }
-        //            }
-
-        //     }.bind(this)
-        //   });
 
         
     }
 
     newPost(post){
         //api call
-        console.log()
         var data = {
             "title":post.title,
             "body": post.body,
@@ -97,40 +116,14 @@ class PostController{
 
         }
 
-        $.post({
-            url:"https://texty-89895.firebaseio.com/posts.json",
-            data : JSON.stringify(data),
-            success:function(data,status,xhr){
-                this.createUIPost(post);
 
-            }.bind(this)
+        this.restController.post("https://texty-89895.firebaseio.com/posts.json",data,function(){
+            this.createUIPost(post);
 
-
-        })
-
+        }.bind(this));
 
     }
 
-
-    addPost(post) {
-
-        console.log("post",post);
-        var postContainer = $("#postContainer").clone();
-        postContainer.css("display","block");
-        postContainer.attr("id","");
-        postContainer.addClass("class","postContainer");
-    
-        var postHeader = postContainer.find(".card-header");
-        var postBody = postContainer.find(".card-text");
-    
-        postHeader.html(post.title);
-        postBody.html(post.body);
-    
-        $("#postsRow").append(postContainer);
-
-
-
-    }
 
     createUIPost(post){
         var postContainer = $("#postContainer").clone();
@@ -143,6 +136,13 @@ class PostController{
     
         postHeader.html(post.title);
         postBody.html(post.body);
+
+        postContainer.find("#editPost").click(function(){
+                this.editMode = true;
+                this.editedPost = post;
+                this.openModal(post);
+
+        }.bind(this));
     
         $("#postsRow").append(postContainer);
     
@@ -153,9 +153,10 @@ class PostController{
     }
 
 
-    openModal() {
-
-
+    openModal(post) {
+        console.log(post);
+        this.modal.modal('show');
+        
     }
 
 

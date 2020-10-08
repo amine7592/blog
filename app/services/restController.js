@@ -12,7 +12,6 @@ class RestController{
             success: onSuccess
           });
 
-
     }
 
     post(url,data,onSuccess,onError){
@@ -24,6 +23,6 @@ class RestController{
 
 
     }
-
+    
 
 }
